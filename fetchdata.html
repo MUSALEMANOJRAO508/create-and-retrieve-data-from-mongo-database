@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Data</title>
+    <style>
+        body 
+        { 
+         font-family: Arial, sans-serif; 
+         text-align: center; 
+         margin: 20px; 
+        }
+        .container 
+        { 
+         display: flex; 
+         flex-wrap: wrap; 
+         justify-content: center; 
+         gap: 10px; 
+        }
+        form 
+        { 
+         border: 1px solid #ccc; 
+         padding: 15px; 
+         width: 300px; 
+         display: inline-block; 
+         text-align: left; 
+        }
+        input 
+        { 
+        width: 95%; 
+        padding: 8px; 
+        margin: 5px 0; 
+        }
+        label 
+        { 
+        font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+    <h2>Users Data</h2>
+    <div class="container" id="userForms"></div>
+
+    <script>
+        async function fetchUsers() {
+            try {
+                const response = await fetch("/fetchall");
+                const users = await response.json();
+
+                const container = document.getElementById("userForms");
+                container.innerHTML = ""; // Clear previous content
+
+                users.forEach(user => {
+                    const form = document.createElement("form");
+
+                    form.innerHTML = `
+                        <label>Name:</label>
+                        <input type="text" value="${user.cname}" readonly><br>
+
+                        <label>Email:</label>
+                        <input type="email" value="${user.mail}" readonly><br>
+
+                        <label>Contact:</label>
+                        <input type="tel" value="${user.contact}" readonly><br>
+
+                        <label>Gender:</label>
+                        <input type="text" value="${user.gender}" readonly><br>
+                    `;
+
+                    container.appendChild(form);
+                });
+
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        }
+
+        fetchUsers(); // Call function to fetch and display users
+    </script>
+</body>
+</html>
